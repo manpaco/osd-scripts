@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# define output directory
+SSDIR="$HOME/Pictures/screenshots"
+# create output directory
+mkdir -p "$SSDIR"
+# define output name using date
+NOW=$(date +'%Y%m%d%H%M%S')
+SSFILE="CAP-${NOW}.png"
+# go to directory
+cd "$SSDIR"
+
+# take area/whole
+case "$1" in
+	area)
+		magick import "$SSFILE"
+		;;
+	whole)
+		magick import -window root "$SSFILE"
+		;;
+	*)
+		echo "Usage: $0 {area|whole}"
+		exit
+		;;
+esac
+
+# kill previous task
+killall aosd_cat &> /dev/null
+
+# show
+echo "SCREENSHOT" | aosd_cat -n "Sans 25" --back-color=#404040 -b 255 -d 10 --fore-color=#e0e0e0 --shadow-opacity=0 -u 1000 -o 1000

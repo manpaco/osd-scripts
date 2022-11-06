@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# increment/decrement
+case $1 in
+	i)
+		xbacklight -inc 5
+		;;
+	d)
+		xbacklight -dec 5
+		;;
+	*)
+		echo "Usage: $0 {i|d}"
+		exit
+		;;
+esac
+
+# get backlight value
+LEV="$(xbacklight -get)"
+LEV=${LEV%.*}
+
+# compose output
+OUT="BACKLIGHT: ${LEV}%"
+
+# kill previous task
+killall aosd_cat &> /dev/null
+
+# show
+echo "$OUT" | aosd_cat -n "Sans 25" --back-color=#404040 -b 255 -d 10 --fore-color=#e0e0e0 --shadow-opacity=0 -u 1000 -o 1000
